@@ -16,7 +16,13 @@ const manifest: Manifest.WebExtensionManifest = {
 	icons: {
 		'128': 'icon-128.png',
 	},
-	permissions: ['activeTab'],
+	permissions: [
+		'activeTab',
+		'scripting',
+		'tabs',
+		'storage',
+	],
+	host_permissions: ['https://*/*'],
 	web_accessible_resources: [
 		{
 			resources: [
