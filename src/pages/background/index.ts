@@ -9,17 +9,21 @@ chrome.runtime.onInstalled.addListener(details => {
 
 chrome.tabs.onUpdated.addListener(async (tabId, ch, _) => {
 	if (ch.status === 'complete') {
-		const [{ url }] = await chrome.tabs.query({
-			active: true,
-			lastFocusedWindow: true,
-		})
+		const t = (
+			await chrome.tabs.query({
+				active: true,
+				lastFocusedWindow: true,
+			})
+		)[0]
 
-		if (!url) return
+		if (!t?.url) return
+
+		const url = t.url
 
 		const hash: Record<
 			string,
 			Array<string>
-		> = await chrome.storage.local.get(null)
+		> = (await chrome.storage.local.get('hash')) ?? {}
 
 		const key = findMatch(Object.keys(hash), url)
 

@@ -8,6 +8,7 @@ const manifest: Manifest.WebExtensionManifest = {
 	description: pkg.description,
 	options_ui: {
 		page: 'src/pages/options/index.html',
+		open_in_tab: true,
 	},
 	background: {
 		service_worker: 'src/pages/background/index.js',
