@@ -20,10 +20,9 @@ chrome.tabs.onUpdated.addListener(async (tabId, ch, _) => {
 
 		const url = t.url
 
-		const hash: Record<
-			string,
-			Array<string>
-		> = (await chrome.storage.local.get('hash')) ?? {}
+		const hash: Record<string, Array<string>> = (
+			await chrome.storage.local.get('hash')
+		).hash ?? {}
 
 		const key = findMatch(Object.keys(hash), url)
 

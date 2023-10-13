@@ -1,20 +1,26 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import '@pages/options/Options.css'
 import { parse, stringify } from 'yaml'
 
 export default function Options(): JSX.Element {
-	const [hash, setHash] = useState<
-		Record<string, Array<string>>
-	>({})
-
 	const textarea = useRef<HTMLTextAreaElement>(null)
 
 	useEffect(
 		() =>
-			void (async () =>
-				setHash(
-					await chrome.storage.local.get(null),
-				))(),
+			void (async () => {
+				if (!textarea.current) return
+
+				const hash = (
+					await chrome.storage.local.get('hash')
+				).hash
+
+				try {
+					textarea.current.value = stringify(hash)
+				} catch {
+					textarea.current.value =
+						"error: can't parse json"
+				}
+			})(),
 		[],
 	)
 
@@ -22,10 +28,7 @@ export default function Options(): JSX.Element {
 		<div className="container">
 			<h1>Options</h1>
 			<br />
-			<textarea
-				ref={textarea}
-				value={stringify(hash)}
-			/>
+			<textarea ref={textarea} />
 			<br />
 			<button
 				onClick={async () => {
